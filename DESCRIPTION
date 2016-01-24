@@ -6,7 +6,9 @@ Date: 2016-01-24
 Author: Carlo Pacioni <c.pacioni@murdoch.edu.au>
 Maintainer: Carlo Pacioni <c.pacioni@murdoch.edu.au>
 Description: This is a package to facilitate analysis of trapping data collected
-  at Whiteman Park. It is intended for internal use only.
+    at Whiteman Park. It is intended for internal use only.
 License: What license is it under?
-Depends: R (>= 3.2.0)
+Depends:
+    R (>= 3.2.0)
 LazyData: TRUE
+RoxygenNote: 5.0.1
