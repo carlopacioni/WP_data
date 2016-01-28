@@ -27,6 +27,31 @@ read.trapping <- function(dir.in=NULL,
                           nfile="Woodland Reserve Fauna Data.xlsx",
                           sheet="DB",
                           last.row=0) {
+  #----------------------------------------------------------------------------#
+  # Helper function
+  #----------------------------------------------------------------------------#
+  num.check <- function(num.col, data, morpho=TRUE) {
+    if(!is.numeric(data[, num.col])) {
+      message(paste("Warnings:", num.col, "is not a numeric vector"))
+    } else {
+      message(paste(num.col, ": OK"))
+    }
+    zeros <- data[, num.col] == 0
+    if(morpho == TRUE) {
+      if(sum(zeros, na.rm=TRUE) > 0) {
+        message(paste("Found zeros in", num.col, "Replaced with NA"))
+        data[, num.col][w] <- NA
+      }
+    }
+  }
+
+  cat.check <- function(cat.col, data) {
+    message(paste("Found", length(unique(data[, cat.col])), "codes for", cat.col))
+    print(unique(data[, cat.col]))
+  }
+  #----------------------------------------------------------------------------#
+  morpho.cols <- c("Animal.Weight", "Pes", "Crown", "GW", "PY.CR")
+  cat.cols <- c("Species", "Sex", "Location", "Age")
   if(last.row == 0) {
         message("Warning: last.row was left to default value.
                 Please check that the last rows contain correct data")
@@ -52,53 +77,11 @@ read.trapping <- function(dir.in=NULL,
 
   message("Conducting basic quality checks...")
 
-  message(paste("Found", length(unique(data$Species)), "species"))
-  print(unique(data$Species))
+  lapply(cat.cols, cat.check, data)
 
-  message(paste("Found", length(unique(data$Sex)), "codes for sex"))
-  print(unique(data$Sex))
+  lapply(morpho.cols, num.check , data, morpho=TRUE)
 
-  message(paste("Found", length(unique(data$Location)), "codes for Location"))
-  print(unique(data$Location))
-
-  message(paste("Found", length(unique(data$Age)), "codes for Age"))
-  print(unique(data$Age))
-
-  if(!is.numeric(data$Animal.Weight)){
-    message("Warnings: Animal.wights is not a numeric vector")
-  } else {
-    message("Animal.Weight: OK")
-  }
-  if(!is.numeric(data$Pes)) {
-    message("Warnings: Pes is not a numeric vector")
-  } else {
-    message("Animal.Weight: OK")
-  }
-  if(!is.numeric(data$Crown)) {
-    message("Warnings: Crown is not a numeric vector")
-  } else {
-    message("Crown: OK")
-  }
-  if(!is.numeric(data$GW)) {
-    message("Warnings: GW is not a numeric vector")
-  } else {
-    message("GW: OK")
-  }
-
-  message(paste("Found", length(unique(data$PY)), "codes for PY"))
-  print(unique(data$PY))
-
-  if(!is.numeric(data$PY.CR)) {
-    message("Warnings: PY.CR is not a numeric vector")
-  } else {
-    message("PY.CR: OK")
-  }
-
-  if(!is.numeric(data$Tick.Count) | !is.integer(data$Tick.Count)) {
-    message("Warnings: Tick.Count is not a numeric or integer vector")
-  } else {
-    message("Tick.Count: OK")
-  }
+  lapply(c("PY", "Tick.Count"), num.check , data, morpho=FALSE)
   return(data)
 }
 
@@ -109,6 +92,7 @@ read.trapping <- function(dir.in=NULL,
 #'
 #' @param data The input data (output from \code{read.trapping})
 #' @import data.table
+#' @import ggplot2
 #' @export
 trap.year <- function(data) {
   ntsession <- function(yr, V1) length(V1[format(V1, "%Y") == yr])
@@ -122,3 +106,4 @@ trap.year <- function(data) {
   setnames(tryrs, c("Species", yrs))
   return(tryrs)
 }
+
