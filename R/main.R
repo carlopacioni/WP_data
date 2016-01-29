@@ -34,7 +34,7 @@ read.trapping <- function(dir.in=NULL,
     if(!is.numeric(data[, num.col])) {
       message(paste("Warnings:", num.col, "is not a numeric vector"))
     } else {
-      message(paste(num.col, ": OK"))
+      message(paste(num.col, "is a numeric vector"))
     }
     zeros <- data[, num.col] == 0
     if(morpho == TRUE) {
