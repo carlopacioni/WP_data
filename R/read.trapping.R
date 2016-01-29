@@ -53,8 +53,8 @@ read.trapping <- function(dir.in=NULL,
   morpho.cols <- c("Animal.Weight", "Pes", "Crown", "GW", "PY.CR")
   cat.cols <- c("Species", "Sex", "Location", "Age")
   if(last.row == 0) {
-        message("Warning: last.row was left to default value.
-                Please check that the last rows contain correct data")
+    message("Warning: last.row was left to default value.
+            Please check that the last rows contain correct data")
   }
 
   if(is.null(nfile)) {
@@ -83,27 +83,4 @@ read.trapping <- function(dir.in=NULL,
 
   lapply(c("PY", "Tick.Count"), num.check , data, morpho=FALSE)
   return(data)
-}
-
-#' Trapping across years
-#'
-#' \code{trap.year} calculates the number of sessions within each year, for each
-#' species.
-#'
-#' @param data The input data (output from \code{read.trapping})
-#' @import data.table
-#' @import ggplot2
-#' @export
-trap.year <- function(data) {
-  ntsession <- function(yr, V1) length(V1[format(V1, "%Y") == yr])
-
-  dt <- data.table(data)
-  dtuni <- dt[, unique(Date), by="Species"]
-
-  yrs<-sort(unique(format(dt[, unique(Date)][!is.na(d)], format="%Y")))
-
-  tryrs <- dtuni[, lapply(yrs, ntsession, V1), by="Species"]
-  setnames(tryrs, c("Species", yrs))
-  return(tryrs)
-}
-
+  }
