@@ -6,6 +6,7 @@
 #' @param data The input data (output from \code{read.trapping})
 #' @import data.table
 #' @import ggplot2
+#' @return A data.frame with years for column and species as rows
 #' @export
 trap.year <- function(data) {
   ntsession <- function(yr, V1) length(V1[format(V1, "%Y") == yr])

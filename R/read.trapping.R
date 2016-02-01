@@ -16,12 +16,22 @@
 #' (even if no data is actually inserted) these are read as non-empty rows in R
 #' and filled with NA, potentially causing problem for downstream analyses.
 #'
+#' \code{read.trapping} will check whether numeric data are stored in numeric
+#' vectors and whether morphometric measurements contain values that are zeros
+#' (which are clearly not correct for morphometric measurements). A warning is
+#' reported in the first case and zero values are replaced with NA in order
+#' exclude them from further analyses.
+#'
+#' The number of codes found for the cateforigal variables and a print out of
+#' the code is also reported.
+#'
 #' @param dir.in The path to the folder where the data file is located
 #' @param nfile The name of the (excel) data file
 #' @param sheet The name of the sheet to be imported
 #' @param last.row An integer with the number of the last row to be imported. If
 #'   zero (default), the last row is determined automatically
 #' @import XLConnect
+#' @return A data.frame
 #' @export
 read.trapping <- function(dir.in=NULL,
                           nfile="Woodland Reserve Fauna Data.xlsx",
