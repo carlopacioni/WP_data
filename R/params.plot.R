@@ -1,10 +1,11 @@
 #' Plot variable means across time
 #'
-#' \code{plot.means} plots the means of the variables passed with \code{params}.
+#' \code{params.plot} plots the means of the variables passed with \code{params}.
 #' 1.96 x SE bars are also plotted.
 #'
 #' If \code{save2disk==TRUE} a PDF and RDA file will be saved to disk in the
 #' directory passed with \code{dir.out}.
+#'
 #' @param data The data.frame with the trapping data
 #' @param params The variables to be plotted
 #' @param species The species to be included in the plots. If "all", then all
@@ -14,7 +15,7 @@
 #' @import data.table
 #' @import zoo
 #' @export
-plot.means <- function(data, params, species="all", save2disk=FALSE, dir.out=NULL) {
+params.plot <- function(data, params, species="all", save2disk=FALSE, dir.out=NULL) {
   dt <- data.table(data)
   if(species == "all") species <- dt[, unique(Species)]
   setkey(dt, Species)
@@ -32,7 +33,7 @@ plot.means <- function(data, params, species="all", save2disk=FALSE, dir.out=NUL
                 by=.(Species, Time)]
   dtses <- dt[J(species), lapply(.SD, se, na.rm = TRUE), .SDcols=params,
               by=c("Species", "Time")]
-plot <- list()
+p <- list()
   for (i in 1:length(params)) {
     lower <- dtmeans[, params[i], with=FALSE] -
       1.96 * dtses[, params[i], with=FALSE]
@@ -52,7 +53,7 @@ plot <- list()
       ggsave(paste0(dir.out, "/", "plot_", params[i], ".pdf"), d)
       save(d, file=paste0(dir.out, "/", "plot_", params[i], ".rda"))
     }
-    plot[[i]] <- d
+    p[[i]] <- d
   }
 return(plot)
 }
