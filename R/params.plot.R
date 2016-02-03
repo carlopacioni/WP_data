@@ -30,9 +30,9 @@ params.plot <- function(data, params, species="all", save2disk=FALSE, dir.out=NU
   dt[, Time := monyr]
   se <- function(x, ...) sd(x, ...) / sqrt(length(x))
   dtmeans <- dt[J(species), lapply(.SD, mean, na.rm = TRUE), .SDcols=params,
-                by=.(Species, Time)]
+                by=.(Species, Sex, Time)]
   dtses <- dt[J(species), lapply(.SD, se, na.rm = TRUE), .SDcols=params,
-              by=c("Species", "Time")]
+              by=c("Species", "Sex", "Time")]
 p <- list()
   for (i in 1:length(params)) {
     lower <- dtmeans[, params[i], with=FALSE] -
@@ -46,7 +46,7 @@ p <- list()
     d <- ggplot(dtmeans,
                 aes_string(x="Time", y=params[i])) +
       geom_point() +
-      facet_grid(Species~.) +
+      facet_grid(Species~Sex) +
       geom_errorbar(aes(ymax=Upper, ymin=Lower), width=0.15) +
       theme(axis.text.x=element_text(angle=-45, vjust=1))
     if(save2disk == TRUE) {
@@ -55,5 +55,5 @@ p <- list()
     }
     p[[i]] <- d
   }
-return(plot)
+return(p)
 }
