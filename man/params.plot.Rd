@@ -19,9 +19,13 @@ the species found will be plotted}
 
 \item{dir.out}{The path where to save the files if save2disk=TRUE}
 }
+\value{
+A list with a plot for each parameter. The last element is a table
+with mean and confidence intervals for each parameter
+}
 \description{
 \code{params.plot} plots the means of the variables passed with \code{params}.
-1.96 x SE bars are also plotted.
+1.96 x SE (confidence intervals) bars are also plotted.
 }
 \details{
 If \code{save2disk==TRUE} a PDF and RDA file will be saved to disk in the

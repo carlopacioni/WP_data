@@ -1,7 +1,7 @@
 #' Plot variable means across time
 #'
 #' \code{params.plot} plots the means of the variables passed with \code{params}.
-#' 1.96 x SE bars are also plotted.
+#' 1.96 x SE (confidence intervals) bars are also plotted.
 #'
 #' If \code{save2disk==TRUE} a PDF and RDA file will be saved to disk in the
 #' directory passed with \code{dir.out}.
@@ -12,7 +12,10 @@
 #'   the species found will be plotted
 #' @param save2disk Whether to save files to disk (default FALSE)
 #' @param dir.out The path where to save the files if save2disk=TRUE
+#' @return A list with a plot for each parameter. The last element is a table
+#' with mean and confidence intervals for each parameter
 #' @import data.table
+#' @import ggplot2
 #' @import zoo
 #' @export
 params.plot <- function(data, params, species="all", save2disk=FALSE, dir.out=NULL) {
@@ -32,7 +35,7 @@ params.plot <- function(data, params, species="all", save2disk=FALSE, dir.out=NU
   dtmeans <- dt[J(species), lapply(.SD, mean, na.rm = TRUE), .SDcols=params,
                 by=.(Species, Sex, Time)]
   dtses <- dt[J(species), lapply(.SD, se, na.rm = TRUE), .SDcols=params,
-              by=c("Species", "Sex", "Time")]
+              by=.(Species, Sex, Time)]
 p <- list()
   for (i in 1:length(params)) {
     lower <- dtmeans[, params[i], with=FALSE] -
@@ -41,13 +44,14 @@ p <- list()
     upper <- dtmeans[, params[i], with=FALSE] +
       1.96 * dtses[, params[i], with=FALSE]
     setnames(upper, "upper")
-    dtmeans[, c("Upper", "Lower") := list(upper[,upper], lower[,lower])]
+    dtmeans[, c(paste0(params[i], "Upper"), paste0(params[i], "Lower")) :=
+              list(upper[,upper], lower[,lower])]
 
-    d <- ggplot(dtmeans,
-                aes_string(x="Time", y=params[i])) +
+    d <- ggplot(dtmeans, aes_string(x="Time", y=params[i])) +
       geom_point() +
       facet_grid(Species~Sex) +
-      geom_errorbar(aes(ymax=Upper, ymin=Lower), width=0.15) +
+      geom_errorbar(aes_string(ymax=paste0(params[i], "Upper"),
+                               ymin=paste0(params[i], "Lower")), width=0.15) +
       theme(axis.text.x=element_text(angle=-45, vjust=1))
     if(save2disk == TRUE) {
       ggsave(paste0(dir.out, "/", "plot_", params[i], ".pdf"), d)
@@ -55,5 +59,7 @@ p <- list()
     }
     p[[i]] <- d
   }
+i <- i + 1
+p[[i]] <- dtmeans
 return(p)
 }
