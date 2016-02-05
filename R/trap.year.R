@@ -5,7 +5,6 @@
 #'
 #' @param data The input data (output from \code{read.trapping})
 #' @import data.table
-#' @import ggplot2
 #' @return A data.frame with years for column and species as rows
 #' @export
 trap.year <- function(data) {
@@ -14,7 +13,7 @@ trap.year <- function(data) {
   dt <- data.table(data)
   dtuni <- dt[, unique(Date), by="Species"]
 
-  yrs<-sort(unique(format(dt[, unique(Date)][!is.na(d)], format="%Y")))
+  yrs<-sort(unique(format(dt[, unique(Date)][!is.na(dtuni)], format="%Y")))
 
   tryrs <- dtuni[, lapply(yrs, ntsession, V1), by="Species"]
   setnames(tryrs, c("Species", yrs))
