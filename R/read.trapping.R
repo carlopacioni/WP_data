@@ -40,25 +40,12 @@ read.trapping <- function(dir.in=NULL,
   #----------------------------------------------------------------------------#
   # Helper function
   #----------------------------------------------------------------------------#
-  num.check <- function(num.col, data, morpho=TRUE) {
-    if(!is.numeric(data[, num.col])) {
-      message(paste("Warnings:", num.col, "is not a numeric vector"))
-    } else {
-      message(paste(num.col, "is a numeric vector"))
-    }
-    zeros <- data[, num.col] == 0
-    if(morpho == TRUE) {
-      if(sum(zeros, na.rm=TRUE) > 0) {
-        message(paste("Found zeros in", num.col, "Replaced with NA"))
-        data[, num.col][w] <- NA
-      }
-    }
-  }
 
   cat.check <- function(cat.col, data) {
     message(paste("Found", length(unique(data[, cat.col])), "codes for", cat.col))
     print(unique(data[, cat.col]))
   }
+
   #----------------------------------------------------------------------------#
   morpho.cols <- c("Animal.Weight", "Pes", "Crown", "GW", "PY.CR")
   cat.cols <- c("Species", "Sex", "Location", "Age")
@@ -89,8 +76,20 @@ read.trapping <- function(dir.in=NULL,
 
   lapply(cat.cols, cat.check, data)
 
-  lapply(morpho.cols, num.check , data, morpho=TRUE)
-
-  lapply(c("PY", "Tick.Count"), num.check , data, morpho=FALSE)
+  num.cols <-c(morpho.cols, c("PY", "Tick.Count"))
+  for (i in seq_along(num.cols)) {
+    if(!is.numeric(data[, num.cols[i]])) {
+      message(paste("Warnings:", num.cols[i], "is NOT a numeric vector"))
+    } else {
+      message(paste(num.cols[i], "is a numeric vector"))
+    }
+    if(num.cols[i] %in% morpho.cols) {
+      zeros <- data[, num.cols[i]] == 0
+      if(sum(zeros, na.rm=TRUE) > 0) {
+        message(paste("Found zeros in", num.cols[i], "replaced with NA"))
+        data[, num.cols[i]][zeros] <- NA
+      }
+    }
+  }
   return(data)
   }
