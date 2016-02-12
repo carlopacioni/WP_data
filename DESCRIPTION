@@ -17,3 +17,10 @@ Imports:
     ggplot2,
     XLConnect,
     zoo
+Suggests:
+    Knit,
+    devtools,
+    rmarkdown,
+    roxygen2,
+    testthat
+VignetteBuilder: knitr
