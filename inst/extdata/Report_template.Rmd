@@ -1,0 +1,68 @@
+---
+title: "Fauna monitoring report"
+author: "Pacioni C."
+output: 
+  word_document:
+          fig_caption: true
+          fig_width: 7
+---
+```{r echo=FALSE, results='hide', warning=FALSE, message=FALSE, error=FALSE}
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE, error=FALSE)
+time <- format(Sys.time(), "%d %B %Y")
+
+library(WPdata, quietly = TRUE)
+library(data.table, quietly = TRUE)
+library(ggplot2)
+dir.in <- "C:\\Users\\30373314\\Documents\\Woylie\\Genetics\\DNA analysis\\Whiteman Park\\DB"
+nfile="Woodland Reserve Fauna Data.xlsx"
+sheet="DB"
+data <- (read.trapping(dir.in, last.row=125, nfile="Sample_data.xlsx"))
+data <- data.table(data)
+nspecies <- length(data[, unique(Species)])
+```
+
+This is a provisional report on native fauna monitoring in the Woodland reserve 
+at Whiteman Park as for `r time`. At establishment, only woylies 
+(_Bettongia penicillata ogylbyi_) and quendas (_scientific name_) were present in 
+the reserve. However, since  its establishment, **date**, a total of `r nspecies`  
+species are now introduced and several surveys were carried out to monitor the 
+status  of the Woodland reserve fauna as detailed in
+**Table 1**.
+
+
+
+
+
+
+
+```{r}
+nsessions <- trap.year(data)
+knitr::kable(nsessions, caption="**Table 1.** Total number of trapping sessions for 
+             each year, for each species monitored in the Woodland reserve at Whiteman Park.")
+```
+
+
+
+As part of the standard monitoring, several demographic and morphological parameters 
+have been recorded. These allow for a monitoring of population condition over time 
+as exemplified by the following plots:
+
+```{r results='hide'}
+p <- params.plot(data, params=c("Animal.Weight", "Pes"), species="Woylie")
+```
+
+
+
+```{r fig.cap="**Figure 1.** Plot of mean animal weight within each trapping session"}
+
+print(p[[1]] + ylab("Weight (kg)"))
+
+```
+
+
+
+```{r fig.cap="**Figure 2.** Plot of mean pes length within each trapping session"}
+
+print(p[[2]] + ylab("Pes (mm)"))
+
+```
