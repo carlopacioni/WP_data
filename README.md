@@ -16,5 +16,3 @@ be installed from within R with
 ```
 install.packages("devtools")
 ```
-Also, if you have problem with the option ```build_vignette=TRUE```, you can just 
-use ```install_github("carlopacioni/WPdata")```.
