@@ -66,7 +66,7 @@ read.trapping <- function(dir.in=NULL,
   }
 
   message(paste("Reading data file", nfile, "..."))
-  message("Empty cells in numeric column are repplaced with NA")
+  message("Empty cells in numeric column are replaced with NA")
   data <- suppressWarnings(readWorksheetFromFile(
     paste0(dir.in, "/", nfile),
     sheet=sheet, endRow=last.row))
@@ -89,6 +89,11 @@ read.trapping <- function(dir.in=NULL,
       if(sum(zeros, na.rm=TRUE) > 0) {
         message(paste("Found zeros in", num.cols[i], "replaced with NA"))
         data[, num.cols[i]][zeros] <- NA
+      }
+        negones <- data[, num.cols[i]] == -1
+        if(sum(negones, na.rm=TRUE) > 0) {
+          message(paste("Replaced -1 with NA in", num.cols[i]))
+          data[, num.cols[i]][negones] <- NA
       }
     }
   }
