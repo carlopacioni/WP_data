@@ -47,7 +47,7 @@ read.trapping <- function(dir.in=NULL,
   }
 
   #----------------------------------------------------------------------------#
-  morpho.cols <- c("Animal.Weight", "Pes", "Crown", "GW", "PY.CR")
+  morpho.cols <- c("Animal.Weight..kg.", "Pes", "Crown", "GW", "PY.CR..cm.")
   cat.cols <- c("Species", "Sex", "Location", "Age")
   if(last.row == 0) {
     message("Warning: last.row was left to default value.
