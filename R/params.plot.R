@@ -20,7 +20,7 @@
 #' @export
 params.plot <- function(data, params, species="all", save2disk=FALSE, dir.out=NULL) {
   dt <- data.table(data)
-  if(species == "all") species <- dt[, unique(Species)]
+  suppressWarnings(if(species == "all") species <- dt[, unique(Species)])
   setkey(dt, Species)
   monyr<-dt[,  format(Date, format="%b %Y")]
   lev<-unique(monyr)
@@ -52,8 +52,9 @@ p <- list()
       facet_grid(Species~Sex) +
       geom_errorbar(aes_string(ymax=paste0(params[i], "Upper"),
                                ymin=paste0(params[i], "Lower")), width=0.15) +
-      theme(axis.text.x=element_text(angle=-45, vjust=1))
+      theme(axis.text.x=element_text(angle=-90, vjust=1))
     if(save2disk == TRUE) {
+      dir.create(dir.out, showWarnings=FALSE, recursive=TRUE)
       ggsave(paste0(dir.out, "/", "plot_", params[i], ".pdf"), d)
       save(d, file=paste0(dir.out, "/", "plot_", params[i], ".rda"))
     }
