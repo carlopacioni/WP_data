@@ -66,7 +66,7 @@ read.trapping <- function(dir.in=NULL,
   }
 
   message(paste("Reading data file", nfile, "..."))
-  message("Empty cells in numeric column are replaced with NA")
+  message("Empty cells in numeric columns are replaced with NA")
   data <- suppressWarnings(readWorksheetFromFile(
     paste0(dir.in, "/", nfile),
     sheet=sheet, endRow=last.row))
