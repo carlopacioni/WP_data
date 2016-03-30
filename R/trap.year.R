@@ -11,11 +11,11 @@ trap.year <- function(data) {
   ntsession <- function(yr, V1) length(V1[format(V1, "%Y") == yr])
 
   dt <- data.table(data)
-  dtuni <- dt[, unique(Date), by="Species"]
+  dtuni <- dt[, unique(Date)]
 
   yrs<-sort(unique(format(dt[, unique(Date)][!is.na(dtuni)], format="%Y")))
 
-  tryrs <- dtuni[, lapply(yrs, ntsession, V1), by="Species"]
+  tryrs <- dt[, lapply(yrs, ntsession, unique(Date)[!is.na(unique(Date))]), by="Species"]
   setnames(tryrs, c("Species", yrs))
   return(tryrs)
 }
