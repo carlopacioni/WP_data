@@ -4,7 +4,7 @@
 #' 1.96 x SE (confidence intervals) bars are also plotted.
 #'
 #' If \code{save2disk==TRUE} a PDF and RDA file will be saved to disk in the
-#' directory passed with \code{dir.out}.
+#' directory passed with \code{dir.out} (which will be created if doesn't exist).
 #'
 #' @param data The data.frame with the trapping data
 #' @param params The variables to be plotted

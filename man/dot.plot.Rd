@@ -28,6 +28,6 @@ with mean and confidence intervals for each parameter
 }
 \details{
 If \code{save2disk==TRUE} a PDF and RDA file will be saved to disk in the
-directory passed with \code{dir.out}.
+directory passed with \code{dir.out} (which will be created if doesn't exist).
 }
 
