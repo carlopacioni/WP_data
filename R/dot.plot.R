@@ -1,6 +1,6 @@
 #' Plot variable means across time
 #'
-#' \code{params.plot} plots the means of the variables passed with \code{params}.
+#' \code{dot.plot} plots the means of the variables passed with \code{params}.
 #' 1.96 x SE (confidence intervals) bars are also plotted.
 #'
 #' If \code{save2disk==TRUE} a PDF and RDA file will be saved to disk in the
@@ -18,7 +18,7 @@
 #' @import ggplot2
 #' @import zoo
 #' @export
-params.plot <- function(data, params, species="all", save2disk=FALSE, dir.out=NULL) {
+dot.plot <- function(data, params, species="all", save2disk=FALSE, dir.out=NULL) {
   dt <- data.table(data)
   suppressWarnings(if(species == "all") species <- dt[, unique(Species)])
   setkey(dt, Species)
