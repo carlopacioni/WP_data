@@ -22,8 +22,8 @@
 #' reported in the first case and zero values are replaced with NA in order
 #' exclude them from further analyses.
 #'
-#' The number of codes found for the cateforigal variables and a print out of
-#' the code is also reported.
+#' The number of codes found for the categorigal variables and a print out of
+#' the codes is also reported.
 #'
 #' @param dir.in The path to the folder where the data file is located
 #' @param nfile The name of the (excel) data file
