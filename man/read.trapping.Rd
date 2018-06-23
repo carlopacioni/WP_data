@@ -44,7 +44,6 @@ vectors and whether morphometric measurements contain values that are zeros
 reported in the first case and zero values are replaced with NA in order
 exclude them from further analyses.
 
-The number of codes found for the cateforigal variables and a print out of
-the code is also reported.
+The number of codes found for the categorigal variables and a print out of
+the codes is also reported.
 }
-

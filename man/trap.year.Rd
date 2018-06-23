@@ -16,4 +16,3 @@ A data.frame with years for column and species as rows
 \code{trap.year} calculates the number of sessions within each year, for each
 species.
 }
-
