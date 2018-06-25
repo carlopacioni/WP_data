@@ -58,16 +58,20 @@ trap2mark <- function(data, species="all", ndays=14,
   i <- 1
   for(sp in species) {
     sdat <- data[data[, "Species"] == sp,]
-    t <- table(data[, animal.ids], data[, run], data[, "Date"])
+    t <- table(sdat[, animal.ids], sdat[, run], sdat[, "Date"])
     ndates <- dim(t)[3]
     dates <- as.Date(dimnames(t)[[3]])
     det <- vector(mode = "list", length = ndates)
     det.fin <- vector(mode = "list", length = ndates)
     for(d in seq_len(ndates)) {
       det[[d]] <- t[, ,d]
-      det.checked <- apply(det[[d]], MARGIN = 2, "==", 0)
-      det.summed <- apply(det.checked, 2, sum)
-      det.fin[[d]] <- det[[d]][, !sapply(det.summed, "==", dim(det[[d]])[1])]
+      Animal.ids <- names(det[[d]])
+      det[[d]] <- data.table(det[[d]])
+
+      det.summed <- det[[d]][, lapply(.SD, sum)]
+      keep <- !sapply(det.summed, "==", 0)
+      det.fin[[d]] <- det[[d]][, keep, with=FALSE]
+      det.fin[[d]] <- cbind(Animal.ids, det[[d]])
     }
 
     dates.diff <- diff(dates) < ndays
@@ -90,13 +94,15 @@ trap2mark <- function(data, species="all", ndays=14,
       session.names[nsession] <- paste0(sp, dates[start.at])
       fn <- paste0(session.names[nsession], ".csv")
       write.csv(det.session[[nsession]][row.names(det.session[[nsession]]) != "-1",],
-                file = fn, row.names = TRUE)
+                file = fn, row.names = FALSE)
       make.mark.inp(fn, h = TRUE, ids = TRUE, count = 1)
       start.at <- split.at + 1
       nsession <- nsession + 1
     }
     names(det.session) <- session.names
     sps[[i]] <- det.session
+    i <- i + 1
   }
   names(sps) <- species
+  return(sps)
 }
