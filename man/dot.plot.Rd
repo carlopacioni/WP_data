@@ -4,7 +4,8 @@
 \alias{dot.plot}
 \title{Plot variable means across time}
 \usage{
-dot.plot(data, params, species = "all", save2disk = FALSE, dir.out = NULL)
+dot.plot(data, params, species = "all", trendline = TRUE,
+  save2disk = FALSE, dir.out = NULL, wcm = 27, hcm = 19)
 }
 \arguments{
 \item{data}{The data.frame with the trapping data}
@@ -17,6 +18,10 @@ the species found will be plotted}
 \item{save2disk}{Whether to save files to disk (default FALSE)}
 
 \item{dir.out}{The path where to save the files if save2disk=TRUE}
+
+\item{wcm}{width of saved plots in cm}
+
+\item{hcm}{height of saved plots in cm}
 }
 \value{
 A list with a plot for each parameter. The last element is a table
@@ -29,4 +34,6 @@ with mean and confidence intervals for each parameter
 \details{
 If \code{save2disk==TRUE} a PDF and RDA file will be saved to disk in the
 directory passed with \code{dir.out} (which will be created if doesn't exist).
+Size of the saved plots can be controlled with \code{wcm} and \code{hcm}.
+Default settings save plots with a landscape orientation on A4 size.
 }
