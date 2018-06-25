@@ -68,7 +68,7 @@ read.trapping <- function(dir.in=NULL,
   message(paste("Reading data file", nfile, "..."))
   message("Empty cells in numeric columns are replaced with NA")
   data <- suppressWarnings(readWorksheetFromFile(
-    paste0(dir.in, "/", nfile),
+    file.path(dir.in, nfile),
     sheet=sheet, endRow=last.row))
   message("Headings of imported data:")
   print(names(data))
