@@ -48,6 +48,7 @@ make.mark.inp <- function(fn, h=FALSE, ids=TRUE, count=1) {
 #' @return a list with an element for each \code{species} where each element is
 #'   a list with the capture history for each session as elements
 #' @export
+#' @import data.table
 trap2mark <- function(data, species="all", ndays=14,
                       animal.ids="M.chip.serial..", run="Run") {
 
@@ -64,14 +65,19 @@ trap2mark <- function(data, species="all", ndays=14,
     det <- vector(mode = "list", length = ndates)
     det.fin <- vector(mode = "list", length = ndates)
     for(d in seq_len(ndates)) {
+      print(paste("starting d =", d, "for sp =", sp))
       det[[d]] <- t[, ,d]
-      Animal.ids <- names(det[[d]])
-      det[[d]] <- data.table(det[[d]])
+      if(class(det[[d]]) == "table") {
+        Animal.ids <- row.names(det[[d]])
+        det[[d]] <- data.table(as.data.frame.matrix(det[[d]]))
+      } else {
+        Animal.ids <- names(det[[d]])
+        det[[d]] <- data.table(det[[d]])
+      }
 
       det.summed <- det[[d]][, lapply(.SD, sum)]
       keep <- !sapply(det.summed, "==", 0)
       det.fin[[d]] <- det[[d]][, keep, with=FALSE]
-      det.fin[[d]] <- cbind(Animal.ids, det[[d]])
     }
 
     dates.diff <- diff(dates) < ndays
@@ -90,7 +96,9 @@ trap2mark <- function(data, species="all", ndays=14,
     start.at <- 1
     nsession <- 1
     for(split.at in split.ats) {
+      print(paste("starting nsession =", nsession, "for sp =", sp))
       det.session[[nsession]] <- do.call(cbind, args = det.fin[start.at:split.at])
+      det.session[[nsession]] <- cbind(Animal.ids, det.session[[nsession]])
       session.names[nsession] <- paste0(sp, dates[start.at])
       fn <- paste0(session.names[nsession], ".csv")
       write.csv(det.session[[nsession]][row.names(det.session[[nsession]]) != "-1",],
