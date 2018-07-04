@@ -17,7 +17,8 @@
 #' @export
 param.dist.plot <- function(data, params, species="all", save2disk=FALSE,
                             dir.out=NULL) {
-  suppressWarnings(if(species == "all") species <- unique(data$Species))
+  if(length(species) == 1)
+    if(species == "all") species <- unique(data$Species)
   data <- data[data$Species %in% species]
 p <- list()
   for (i in 1:length(params)) {

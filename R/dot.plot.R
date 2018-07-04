@@ -25,7 +25,8 @@
 dot.plot <- function(data, params, species="all", trendline=TRUE,
                      save2disk=FALSE, dir.out=NULL, wcm=27, hcm=19) {
   dt <- data.table(data)
-  suppressWarnings(if(species == "all") species <- dt[, unique(Species)])
+  if(length(species) == 1)
+    if(species == "all") species <- dt[, unique(Species)]
   setkey(dt, Species)
   monyr<-dt[,  format(Date, format="%b %Y")]
   lev<-unique(monyr)
