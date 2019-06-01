@@ -6,8 +6,10 @@
 #' @import data.table
 #' @import ggplot2
 #' @export
-#' @return A list wher the first element is a plot and the second are the data
-KTBA <- function(data, species="all", animal.ids="M.chip.serial..") {
+#' @return A list where the first element is a plot and the second are the data
+#'           If save2disk=TRUE saves the plot as .pdf and .rda, and the data as .csv
+KTBA <- function(data, species="all", animal.ids="M.chip.serial..",
+                 save2disk=FALSE, dir.out=NULL) {
 
   if(length(species) == 1) {
     if(species == "all") species <- unique(data[, "Species"])
@@ -31,5 +33,12 @@ KTBA <- function(data, species="all", animal.ids="M.chip.serial..") {
     det.fin <- det[, .(KTBA=sum(Alive, na.rm = TRUE)), by=c("Species", "Date")]
 
     p <- ggplot(det.fin, aes(Date, KTBA)) + geom_line() + facet_grid(Species~.)
+
+    if(save2disk == TRUE) {
+      dir.create(dir.out, showWarnings=FALSE, recursive=TRUE)
+      ggsave(file.path(dir.out, "KTBA_plot.pdf"), p)
+      save(d, file=file.path(dir.out, "KTBA_plot.rda"))
+      write.csv(det.fin, file.path(dir.out, "KTBA.csv"), row.names = FALSE)
+    }
   return(list(Plot=p, Data=det.fin))
 }
