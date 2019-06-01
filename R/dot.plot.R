@@ -12,6 +12,7 @@
 #' @param params The variables to be plotted
 #' @param species The species to be included in the plots. If "all", then all
 #'   the species found will be plotted
+#' @param trendline  Whether to plot a trend line (a loeass curve)
 #' @param save2disk Whether to save files to disk (default FALSE)
 #' @param dir.out The path where to save the files if save2disk=TRUE
 #' @param wcm width of saved plots in cm

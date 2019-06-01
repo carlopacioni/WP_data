@@ -4,8 +4,9 @@
 \alias{read.trapping}
 \title{Read trapping data}
 \usage{
-read.trapping(dir.in = NULL, nfile = "Woodland Reserve Fauna Data.xlsx",
-  sheet = "DB", last.row = 0)
+read.trapping(dir.in = NULL,
+  nfile = "Woodland Reserve Fauna Data.xlsx", sheet = "DB",
+  last.row = 0)
 }
 \arguments{
 \item{dir.in}{The path to the folder where the data file is located}

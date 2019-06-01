@@ -15,6 +15,8 @@ dot.plot(data, params, species = "all", trendline = TRUE,
 \item{species}{The species to be included in the plots. If "all", then all
 the species found will be plotted}
 
+\item{trendline}{Whether to plot a trend line (a loeass curve)}
+
 \item{save2disk}{Whether to save files to disk (default FALSE)}
 
 \item{dir.out}{The path where to save the files if save2disk=TRUE}
