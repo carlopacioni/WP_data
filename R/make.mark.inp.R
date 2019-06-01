@@ -46,7 +46,7 @@ make.mark.inp <- function(fn, h=FALSE, ids=TRUE, count=1) {
 #'   the same day
 #' @inheritParams dot.plot
 #' @return a list with an element for each \code{species} where each element is
-#'   a list with the capture history for each session as elements
+#'   a list with the capture history for each session
 #' @export
 #' @import data.table
 trap2mark <- function(data, species="all", ndays=14,
